@@ -20,7 +20,7 @@
   input { font-family: inherit; }
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-  #app { width: 100%; height: 100vh; height: 100dvh; background: #0B0B14; color: #fff; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+  #app { width: 100%; height: 100vh; height: 100dvh; background: #0B0B14; color: #fff; display: flex; flex-direction: column; overflow: hidden; position: relative; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); box-sizing: border-box; }
   @keyframes spinGlobe { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
   @keyframes pinPing { 0% { transform: scale(0.6); opacity: 0.8; } 100% { transform: scale(2.4); opacity: 0; } }
   .globe-lines { position: absolute; inset: -30%; background-image: repeating-linear-gradient(90deg, rgba(193,77,255,0.28) 0px, rgba(193,77,255,0.28) 1px, transparent 1px, transparent 26px), repeating-linear-gradient(0deg, rgba(138,43,255,0.18) 0px, rgba(138,43,255,0.18) 1px, transparent 1px, transparent 38px); animation: spinGlobe 22s linear infinite; }
@@ -1020,7 +1020,7 @@ function render() {
   }
   app.innerHTML =
     '<div style="flex:1;position:relative;overflow:hidden">' + screenHtml(cur) + "</div>" +
-    '<div style="display:flex;border-top:1px solid ' + C.line + ';background:' + C.bg + ';flex-shrink:0;padding-bottom:env(safe-area-inset-bottom)">' + navHtml + "</div>" + cartBtn;
+    '<div style="display:flex;border-top:1px solid ' + C.line + ';background:' + C.bg + ';flex-shrink:0">' + navHtml + "</div>" + cartBtn;
   attachHandlers(app);
 }
 
