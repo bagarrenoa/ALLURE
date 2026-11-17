@@ -9,7 +9,7 @@ window.QG_ETAT = {
     malik:  { statut: "en pause", tache: "Plan growth rendu : test pub de 7 jours, cible ≤ 8 € par inscrit" },
     lou:    { statut: "en pause", tache: "Plan influence rendu : 11 pistes de riders, 3 DM, Team Allure" },
     mila:   { statut: "en pause", tache: "3 concepts rendus. Je commence par « Ville / Station »" },
-    sam:    { statut: "au poste", tache: "J'écris 5 réels pour la semaine 1" },
+    sam:    { statut: "en pause", tache: "5 réels prêts à tourner. Ordre proposé : 3, 1, 2, 4, 5" },
     zoe:    { statut: "en pause", tache: "5 prompts Midjourney + carrousel « DOSSIER #001 » prêts à valider" },
     rui:    { statut: "en pause", tache: "3 usines retenues : Damel, Petratex, P&R Têxteis. Agenda de 4 jours prêt" },
     clara:  { statut: "en pause", tache: "Process précommandes rendu : 4 libellés Gmail, 9 statuts, 5 modèles d'e-mails" },
