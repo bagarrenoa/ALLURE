@@ -21,6 +21,10 @@ Réponds directement sous chaque question (ou dans le chat). Les agents mettront
 12. Peux-tu me transmettre quelques e-mails de précommande (format exact) pour qu'on construise le tableau de suivi ?
 13. Le code du site de précommande : où est-il (Netlify, GitHub, autre) ? Peut-on le mettre dans ce dépôt ?
 14. Date de livraison promise aux clients ?
+14b. (Clara) Marge de sécurité à ajouter aux quantités usine (en %) ? Taux de conversion attendu des précommandes gratuites ?
+14c. (Clara) Expédition depuis la France (chez toi) ou directement depuis le Portugal ? Port inclus dans le prix ou payé par le client ? Pays livrés au lancement ?
+14d. (Clara) Délai de retour/échange proposé (minimum légal 14 jours) et qui paie le retour ?
+14e. (Clara) Le formulaire du site contient-il une case de consentement pour recevoir des e-mails (RGPD) ?
 
 ## 📣 Marketing (Inès / Lou / Malik)
 15. Qui sont les personnes sur les photos : toi et des amis ? Disponibles pour tourner régulièrement ?
