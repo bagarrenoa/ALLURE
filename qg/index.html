@@ -1,0 +1,545 @@
+<title>QG Allure</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Silkscreen:wght@400;700&display=swap">
+<style>
+/* Layout : le plateau isométrique occupe la scène, la fiche de l'équipe se range à droite (sous la scène sur téléphone).
+   Univers unique et assumé : ciel lavande comme dans le QG de référence, panneaux nuit. */
+:root {
+  --sky-top: #a998ee;
+  --sky-low: #f2c9df;
+  --night: #16122b;
+  --night-2: #221c40;
+  --line: #3a3163;
+  --ink: #f5f1ff;
+  --ink-soft: #b9b0dc;
+  --accent: #ff4fa3;
+  --ok: #5fe08a;
+  --warn: #ffc24a;
+  --font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-pixel: "Silkscreen", "Courier New", monospace;
+  color-scheme: light;
+}
+html, body { height: 100%; }
+body {
+  background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-low) 100%) fixed;
+  background-color: var(--sky-top);
+  color: var(--ink);
+  font-family: var(--font-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 16px;
+  box-sizing: border-box;
+}
+*, *::before, *::after { box-sizing: inherit; }
+.wrap { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; }
+@media (max-width: 920px) { .wrap { grid-template-columns: minmax(0, 1fr); } }
+
+.stage { position: relative; min-width: 0; height: clamp(380px, 74vh, 820px); border-radius: 18px; overflow: hidden;
+  background: linear-gradient(180deg, var(--sky-top), var(--sky-low)); box-shadow: 0 1px 0 rgba(255,255,255,.4) inset, 0 20px 50px -30px #2a1a6a; }
+.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: grab; touch-action: none; display: block; }
+.stage canvas:active { cursor: grabbing; }
+
+.badge { position: absolute; left: 14px; top: 14px; background: var(--night); color: var(--ink); border-radius: 12px; padding: 10px 16px 9px; pointer-events: none; box-shadow: 0 6px 0 rgba(22,18,43,.25); }
+.badge h1 { margin: 0; font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: clamp(24px, 3.4vw, 36px); line-height: 1; letter-spacing: .5px; }
+.badge p { margin: 4px 0 0; font-family: var(--font-pixel); font-size: 10px; letter-spacing: 2px; color: var(--ink-soft); text-transform: uppercase; }
+
+.zoom { position: absolute; right: 12px; bottom: 12px; display: flex; gap: 6px; }
+.zoom button { width: 36px; height: 36px; border-radius: 10px; border: 0; background: var(--night); color: var(--ink); font: 700 16px var(--font-body); cursor: pointer; }
+.zoom button:focus-visible, .chip:focus-visible, .copy:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.hint { position: absolute; left: 14px; bottom: 14px; font-family: var(--font-pixel); font-size: 10px; letter-spacing: 1px; color: var(--night); background: rgba(255,255,255,.6); padding: 6px 9px; border-radius: 8px; pointer-events: none; }
+
+.panel { min-width: 0; background: var(--night); border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 18px; align-self: start; }
+.panel h2 { margin: 0; font-family: var(--font-pixel); font-size: 11px; letter-spacing: 2px; color: var(--ink-soft); text-transform: uppercase; font-weight: 400; }
+.chips { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.chip { border: 0; border-radius: 8px; padding: 8px 9px; text-align: left; color: #fff; font: 600 12px/1.2 var(--font-body); cursor: pointer; text-shadow: 0 1px 0 rgba(0,0,0,.25); opacity: .92; }
+.chip[aria-pressed="true"] { opacity: 1; box-shadow: 0 0 0 2px var(--ink); }
+.chip small { display: block; font: 400 10px var(--font-pixel); letter-spacing: .5px; opacity: .85; margin-top: 2px; }
+
+.card { background: var(--night-2); border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.card .who { display: flex; gap: 12px; align-items: center; }
+.card canvas { width: 48px; height: 64px; image-rendering: pixelated; background: rgba(255,255,255,.06); border-radius: 10px; flex: none; }
+.card h3 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 28px; line-height: 1; }
+.card .role { margin: 3px 0 0; color: var(--ink-soft); font-size: 13px; }
+.pill { display: inline-flex; align-items: center; gap: 6px; font: 400 10px var(--font-pixel); letter-spacing: 1px; text-transform: uppercase; padding: 4px 8px; border-radius: 99px; background: rgba(95,224,138,.14); color: var(--ok); width: fit-content; }
+.pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.pill.pause { background: rgba(255,194,74,.14); color: var(--warn); }
+.pill.meet { background: rgba(255,79,163,.16); color: var(--accent); }
+.task { margin: 0; font-family: var(--font-display); font-style: italic; font-size: 18px; line-height: 1.25; color: var(--ink); }
+.label { font: 400 10px var(--font-pixel); letter-spacing: 1px; color: var(--ink-soft); text-transform: uppercase; }
+.cmd { display: flex; gap: 8px; align-items: stretch; }
+.cmd code { flex: 1; min-width: 0; font: 12px/1.4 ui-monospace, "SF Mono", Menlo, monospace; background: #0d0a1c; color: #e9e3ff; padding: 9px 10px; border-radius: 8px; overflow-wrap: anywhere; }
+.copy { border: 0; border-radius: 8px; background: var(--accent); color: #fff; font: 600 12px var(--font-body); padding: 0 12px; cursor: pointer; }
+.how { margin: 0; padding-left: 18px; color: var(--ink-soft); font-size: 13px; line-height: 1.5; display: grid; gap: 6px; }
+.how b { color: var(--ink); font-weight: 600; }
+.meta { font: 400 10px var(--font-pixel); letter-spacing: 1px; color: var(--ink-soft); }
+</style>
+
+<div class="wrap">
+  <section class="stage" id="stage" aria-label="Plateau du QG Allure">
+    <canvas id="scene"></canvas>
+    <div class="badge"><h1>Le QG Allure</h1><p id="count">12 agents IA</p></div>
+    <div class="hint" id="hint">Touche un agent</div>
+    <div class="zoom">
+      <button id="zin" aria-label="Zoomer">+</button>
+      <button id="zout" aria-label="Dézoomer">−</button>
+      <button id="zfit" aria-label="Recentrer">⤢</button>
+    </div>
+  </section>
+
+  <aside class="panel">
+    <div>
+      <h2>Les pôles du QG</h2>
+    </div>
+    <div class="chips" id="chips"></div>
+
+    <div class="card" id="card" aria-live="polite"></div>
+
+    <div style="display:grid;gap:10px">
+      <h2>Comment on travaille</h2>
+      <ol class="how">
+        <li><b>Tu confies</b> une mission à Victor, ou directement à un agent par son prénom.</li>
+        <li><b>/reunion</b> fait travailler tous les pôles. Basile, l'avocat du diable, démonte le plan.</li>
+        <li><b>Le compte-rendu</b> arrive dans <code>rapports/</code> avec les décisions à prendre.</li>
+      </ol>
+      <div class="meta" id="maj"></div>
+    </div>
+  </aside>
+</div>
+
+<script src="etat.js"></script>
+<script>
+(() => {
+"use strict";
+const ETAT = (window.QG_ETAT && window.QG_ETAT.agents) ? window.QG_ETAT : { maj: "", agents: {} };
+const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- Données du QG ---------- */
+const SUITS = {
+  sauge:  ["#8fae8a", "#a6ff3c"],
+  rose:   ["#f3a3c4", "#ff1f8e"],
+  marine: ["#1d2444", "#2e63ff"],
+  orange: ["#f06a1c", "#a3183a"],
+  noir:   ["#1b1b1f", "#e3262e"],
+  noir2:  ["#26262c", "#9aa0aa"]
+};
+const ROOMS = [
+  { id: "mkt",     nom: "Marketing & Growth",      x: 1,  y: 1,  w: 8,  h: 6, col: "#ef5f95" },
+  { id: "dir",     nom: "Direction générale",      x: 10, y: 1,  w: 10, h: 6, col: "#e7b443", glass: true },
+  { id: "inf",     nom: "Communauté & Influence",  x: 21, y: 1,  w: 8,  h: 6, col: "#5cc06a" },
+  { id: "studio",  nom: "Studio",                  x: 1,  y: 8,  w: 8,  h: 6, col: "#9a6ae0" },
+  { id: "cafe",    nom: "Café du Télésiège",       x: 10, y: 8,  w: 10, h: 6, col: "#c9925c", checker: true },
+  { id: "prod",    nom: "Production & Sourcing",   x: 21, y: 8,  w: 8,  h: 6, col: "#ff8a3d" },
+  { id: "ops",     nom: "Stock & Précommandes",    x: 1,  y: 15, w: 8,  h: 6, col: "#4d8af5" },
+  { id: "reunion", nom: "Salle de réunion",        x: 10, y: 15, w: 5,  h: 6, col: "#8f9bb0" },
+  { id: "fin",     nom: "Finance & Juridique",     x: 16, y: 15, w: 4,  h: 6, col: "#6d6ff0" },
+  { id: "veille",  nom: "Veille",                  x: 21, y: 15, w: 8,  h: 6, col: "#2fb7a8" }
+];
+const ROOM = Object.fromEntries(ROOMS.map(r => [r.id, r]));
+
+const AGENTS = [
+  { id: "victor", prenom: "Victor", poste: "Gérant · CEO", room: "dir", fichier: "victor-ceo", suit: "noir", desk: [13.5, 2.6], big: true },
+  { id: "basile", prenom: "Basile", poste: "Avocat du diable", room: "dir", fichier: "basile-avocat-du-diable", suit: "noir2", desk: [17, 3] },
+  { id: "ines",   prenom: "Inès",   poste: "CMO · stratégie de marque", room: "mkt", fichier: "ines-cmo", suit: "rose", desk: [2.5, 3] },
+  { id: "malik",  prenom: "Malik",  poste: "Growth · pubs & conversion", room: "mkt", fichier: "malik-growth", suit: "marine", desk: [5.5, 3] },
+  { id: "lou",    prenom: "Lou",    poste: "Influence & communauté", room: "inf", fichier: "lou-influence", suit: "sauge", desk: [23, 3] },
+  { id: "mila",   prenom: "Mila",   poste: "Directrice créative", room: "studio", fichier: "mila-directrice-creative", suit: "rose", desk: [2, 10] },
+  { id: "sam",    prenom: "Sam",    poste: "Monteur · réels & TikTok", room: "studio", fichier: "sam-monteur", suit: "orange", desk: [4, 10] },
+  { id: "zoe",    prenom: "Zoé",    poste: "Visuels IA & légendes", room: "studio", fichier: "zoe-visuels-ia", suit: "sauge", desk: [6, 10] },
+  { id: "rui",    prenom: "Rui",    poste: "Sourcing usines Portugal", room: "prod", fichier: "rui-sourcing-portugal", suit: "orange", desk: [23, 10] },
+  { id: "clara",  prenom: "Clara",  poste: "Stock & précommandes", room: "ops", fichier: "clara-ops", suit: "marine", desk: [3, 17] },
+  { id: "hugo",   prenom: "Hugo",   poste: "Finance & juridique", room: "fin", fichier: "hugo-finance-juridique", suit: "noir", desk: [17, 17] },
+  { id: "nora",   prenom: "Nora",   poste: "Veille & tendances", room: "veille", fichier: "nora-veille", suit: "sauge", desk: [23.5, 17.5] }
+];
+
+const SEATS_REUNION = [[11.5, 16.25], [12.5, 16.25], [13.5, 16.25], [11.5, 19.35], [12.5, 19.35], [13.5, 19.35], [10.7, 17.8], [14.3, 17.8]];
+const SPOTS = {
+  cafe: [[12, 10.6], [13.2, 11.6], [16.2, 10.8], [17.4, 11.8], [14.6, 12.6], [11.4, 12.4]],
+  ops: [[6.6, 18.6]],
+  reunion: SEATS_REUNION
+};
+const CAFE_LINES = ["Un allongé, ça marche !", "Café ?", "T'as vu les chiffres d'hier ?", "On teste la rose en pub ?", "Pause de 5 min.", "Il reste du croissant ?"];
+
+/* ---------- Canvas & projection ---------- */
+const stage = document.getElementById("stage");
+const cv = document.getElementById("scene");
+const ctx = cv.getContext("2d");
+let DPR = 1, CW = 0, CH = 0, zoom = 1, panX = 0, panY = 0;
+const P = (x, y, z = 0) => [(x - y) * 16, (x + y) * 8 - z];
+const BOUNDS = { x0: -26 * 16 - 20, x1: 33 * 16 + 20, y0: -70, y1: (31 + 25) * 8 + 40 };
+
+function fit() {
+  const w = BOUNDS.x1 - BOUNDS.x0, h = BOUNDS.y1 - BOUNDS.y0;
+  zoom = Math.min(CW / w, CH / h) * 1.02;
+  panX = (CW - w * zoom) / 2 - BOUNDS.x0 * zoom;
+  panY = (CH - h * zoom) / 2 - BOUNDS.y0 * zoom + 18;
+}
+function resize() {
+  const r = stage.getBoundingClientRect();
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  CW = r.width; CH = r.height;
+  cv.width = Math.round(CW * DPR); cv.height = Math.round(CH * DPR);
+  fit();
+}
+new ResizeObserver(resize).observe(stage);
+
+/* ---------- Couleurs ---------- */
+const shadeCache = new Map();
+function shade(hex, amt) {
+  const key = hex + amt; if (shadeCache.has(key)) return shadeCache.get(key);
+  const n = parseInt(hex.slice(1), 16);
+  let r = n >> 16, g = (n >> 8) & 255, b = n & 255;
+  const t = amt < 0 ? 0 : 255, p = Math.abs(amt);
+  r = Math.round(r + (t - r) * p); g = Math.round(g + (t - g) * p); b = Math.round(b + (t - b) * p);
+  const out = `rgb(${r},${g},${b})`; shadeCache.set(key, out); return out;
+}
+function poly(pts, fill) { ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]); for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]); ctx.closePath(); ctx.fillStyle = fill; ctx.fill(); }
+function box(x, y, z, w, d, h, col, alpha = 1) {
+  if (alpha < 1) ctx.globalAlpha = alpha;
+  poly([P(x, y + d, z + h), P(x + w, y + d, z + h), P(x + w, y + d, z), P(x, y + d, z)], shade(col, -0.16));
+  poly([P(x + w, y, z + h), P(x + w, y + d, z + h), P(x + w, y + d, z), P(x + w, y, z)], shade(col, -0.32));
+  poly([P(x, y, z + h), P(x + w, y, z + h), P(x + w, y + d, z + h), P(x, y + d, z + h)], col);
+  if (alpha < 1) ctx.globalAlpha = 1;
+}
+function rect(sx, sy, w, h, col) { ctx.fillStyle = col; ctx.fillRect(Math.round(sx), Math.round(sy), w, h); }
+
+/* ---------- Décor statique ---------- */
+const statics = [];
+const add = (k, fn) => statics.push({ k, fn });
+
+function pine(x, y, s = 1) {
+  add(x + y, () => {
+    const [sx, sy] = P(x, y);
+    ctx.fillStyle = "rgba(30,60,30,.18)"; ctx.beginPath(); ctx.ellipse(sx, sy, 9 * s, 4 * s, 0, 0, 7); ctx.fill();
+    rect(sx - 2, sy - 7 * s, 4, 7 * s, "#7a4a2a");
+    const tiers = [["#2e8a4a", 12, 0], ["#38a157", 9.5, 8], ["#46b864", 7, 15]];
+    tiers.forEach(([c, w, off]) => {
+      const base = sy - 6 * s - off * s;
+      poly([[sx - w * s, base], [sx + w * s, base], [sx, base - 13 * s]], c);
+      poly([[sx, base], [sx + w * s, base], [sx, base - 13 * s]], shade(c, -0.15));
+    });
+  });
+}
+function bush(x, y) {
+  add(x + y + 0.5, () => {
+    box(x + 0.25, y + 0.25, 0, 0.5, 0.5, 5, "#c06a3c");
+    const [sx, sy] = P(x + 0.5, y + 0.5, 5);
+    ctx.fillStyle = "#3fae5b"; ctx.beginPath(); ctx.arc(sx, sy - 6, 7, 0, 7); ctx.fill();
+    ctx.fillStyle = "#5fd07a"; ctx.beginPath(); ctx.arc(sx - 2, sy - 8, 4, 0, 7); ctx.fill();
+  });
+}
+function desk(x, y, opts = {}) {
+  const w = opts.w || 1.1, d = opts.d || 0.7;
+  add(x + w / 2 + y + d / 2, () => {
+    box(x, y, 0, w, d, 9, opts.col || "#d9b48a");
+    box(x + w / 2 - 0.22, y + 0.12, 9, 0.44, 0.08, 9, "#2a2740");
+    const [sx, sy] = P(x + w / 2, y + 0.2, 13);
+    rect(sx - 4, sy - 1, 7, 4, opts.screen || "#7fd3ff");
+    if (opts.lamp) { box(x + 0.1, y + 0.1, 9, 0.12, 0.12, 6, "#ffd36a"); }
+  });
+}
+function chair(x, y, col = "#3a3552") { add(x + y + 0.35, () => { box(x, y, 0, 0.4, 0.4, 5, col); box(x, y + 0.32, 5, 0.4, 0.08, 7, col); }); }
+function crate(x, y, z, col = "#c49a62") { add(x + y + 0.5 + z * 0.01, () => { box(x, y, z, 0.6, 0.6, 9, col); const [sx, sy] = P(x + 0.3, y + 0.6, z + 5); rect(sx - 3, sy - 1, 6, 1, shade(col, -0.35)); }); }
+
+// Bordure d'arbres
+for (let i = -1; i <= 30; i += 2.2) pine(i, -1.0, 0.9 + (i % 3) * 0.05);
+for (let j = 1.4; j <= 23; j += 2.4) pine(-1.0, j, 0.95);
+[[30.6, 4], [30.6, 12], [30.6, 19.5], [6, 23.6], [18, 23.6], [27, 23.6]].forEach(([x, y]) => pine(x, y, 0.8));
+
+// Murs
+ROOMS.forEach(r => {
+  const backH = r.glass ? 18 : 20, wallCol = r.col;
+  const dIdx = r.x + Math.floor(r.w / 2);
+  r.door = { inX: dIdx + 0.5, inY: r.y + r.h - 0.8, outX: dIdx + 0.5, outY: r.y + r.h + 0.5 };
+  for (let i = r.x; i < r.x + r.w; i++) add(i + r.y + 0.2, () => box(i, r.y, 0, 1, 0.14, backH, r.glass ? "#bfe6ff" : "#efe9f7", r.glass ? 0.55 : 1));
+  for (let j = r.y; j < r.y + r.h; j++) add(r.x + j + 0.2, () => box(r.x, j, 0, 0.14, 1, backH, r.glass ? "#bfe6ff" : "#e3dcef", r.glass ? 0.55 : 1));
+  for (let i = r.x; i < r.x + r.w; i++) if (i !== dIdx) add(i + r.y + r.h + 0.4, () => box(i, r.y + r.h - 0.14, 0, 1, 0.14, r.glass ? 14 : 5, r.glass ? "#bfe6ff" : wallCol, r.glass ? 0.45 : 1));
+  for (let j = r.y; j < r.y + r.h; j++) add(r.x + r.w + j + 0.4, () => box(r.x + r.w - 0.14, j, 0, 0.14, 1, r.glass ? 14 : 5, r.glass ? "#bfe6ff" : wallCol, r.glass ? 0.45 : 1));
+});
+
+// Mobilier par pôle
+AGENTS.forEach(a => { desk(a.desk[0], a.desk[1], a.big ? { w: 1.8, d: 0.8, col: "#8a5a35", lamp: true } : {}); });
+// Direction
+add(12 + 5.2, () => { box(11, 5.3, 0, 2.2, 0.7, 5, "#7a2f3a"); box(11, 5.3, 5, 2.2, 0.15, 6, "#8f3a46"); });
+bush(18.6, 1.4); bush(10.4, 1.4);
+add(10.5 + 3, () => { box(10.4, 2.6, 8, 0.1, 1.6, 10, "#ffffff"); });
+// Marketing : tableau blanc + courbe
+add(1 + 2, () => { box(1.15, 1.6, 6, 0.08, 2.4, 11, "#ffffff"); const [a, b] = [P(1.2, 1.9, 9), P(1.2, 3.8, 15)]; ctx.strokeStyle = "#ef5f95"; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); });
+bush(7.6, 1.4); bush(1.5, 5.6);
+// Influence : canapé + ring light
+add(26 + 5.6, () => { box(25.6, 4.6, 0, 2.2, 0.8, 5, "#f3a3c4"); box(25.6, 5.25, 5, 2.2, 0.15, 6, "#e48ab1"); });
+add(27.5 + 2.2, () => { box(27.45, 2.15, 0, 0.1, 0.1, 22, "#333"); const [sx, sy] = P(27.5, 2.2, 26); ctx.strokeStyle = "#fff6c8"; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(sx, sy, 6, 0, 7); ctx.stroke(); });
+bush(21.5, 1.4);
+// Studio : portant avec les 5 coloris + fond papier
+add(1.2 + 11, () => box(1.15, 10.5, 0, 0.1, 2.6, 22, "#f7f4ee"));
+add(6.5 + 12.4, () => {
+  box(5.2, 12.5, 0, 0.08, 0.08, 16, "#555"); box(8.0, 12.5, 0, 0.08, 0.08, 16, "#555"); box(5.2, 12.5, 15, 2.88, 0.08, 1, "#555");
+  ["sauge", "rose", "marine", "orange", "noir"].forEach((s, i) => { box(5.45 + i * 0.52, 12.45, 3, 0.4, 0.2, 11, SUITS[s][0]); const [sx, sy] = P(5.65 + i * 0.52, 12.65, 9); rect(sx, sy - 4, 1, 6, SUITS[s][1]); });
+});
+add(2.6 + 12.6, () => { box(2.55, 12.55, 0, 0.06, 0.06, 13, "#222"); box(2.4, 12.4, 13, 0.35, 0.3, 4, "#1a1a1a"); });
+// Café
+add(11 + 9, () => { box(10.4, 8.4, 0, 0.9, 5.0, 10, "#7b4a2b"); box(10.4, 8.4, 10, 0.9, 5.0, 1.5, "#e9d7c0"); });
+add(10.8 + 9.2, () => { box(10.55, 8.9, 11.5, 0.5, 0.5, 9, "#2a2a2a"); const [sx, sy] = P(10.8, 9.4, 17); rect(sx - 1, sy, 3, 2, "#ff4f4f"); });
+[[13, 10], [16.8, 10.2], [14.2, 12.2]].forEach(([x, y]) => add(x + y + 0.4, () => { box(x + 0.3, y + 0.3, 0, 0.12, 0.12, 7, "#444"); box(x, y, 7, 0.75, 0.75, 1.5, "#fff3e2"); }));
+bush(19.4, 8.5); bush(19.4, 13.2);
+// Production : machines à coudre + rouleaux de tissu
+[[24.8, 11.6], [26.6, 11.6]].forEach(([x, y]) => add(x + y + 0.5, () => { box(x, y, 0, 1.2, 0.7, 8, "#e8e2d6"); box(x + 0.3, y + 0.15, 8, 0.6, 0.3, 5, "#c8202c"); }));
+["sauge", "rose", "marine", "orange", "noir"].forEach((s, i) => add(28 + 9 + i * 0.6, () => box(27.9, 8.5 + i * 0.6, 0, 0.5, 0.5, 14, SUITS[s][0])));
+// Stock : étagères de cartons + imprimante
+[0, 1].forEach(row => [0, 1, 2].forEach(c => crate(5.4 + c * 0.75, 15.4 + row * 0.75, 0)));
+[0, 1, 2].forEach(c => crate(5.4 + c * 0.75, 15.4, 9, "#d6ad74"));
+add(6.4 + 19, () => { box(6.2, 19, 0, 0.8, 0.6, 8, "#f1f1f1"); box(6.3, 19.05, 8, 0.6, 0.4, 2, "#cfcfcf"); });
+bush(1.5, 20.2);
+// Réunion
+add(12.5 + 17.8, () => box(11, 16.7, 0, 3, 2.2, 8, "#e9e4f2"));
+add(10.2 + 17.8, () => box(10.15, 16.2, 6, 0.08, 2.6, 12, "#2a2740"));
+// Finance : coffre
+add(18.8 + 15.9, () => { box(18.6, 15.5, 0, 0.9, 0.8, 10, "#565a6e"); const [sx, sy] = P(19.5, 15.9, 5); ctx.fillStyle = "#ffd36a"; ctx.beginPath(); ctx.arc(sx - 3, sy, 1.6, 0, 7); ctx.fill(); });
+bush(16.5, 20.1);
+// Veille : mur d'écrans
+add(21.2 + 17, () => { for (let k = 0; k < 3; k++) box(21.15, 15.6 + k * 0.95, 8, 0.08, 0.85, 7, "#1b2f3a"); for (let k = 0; k < 3; k++) box(21.15, 15.6 + k * 0.95, 16, 0.08, 0.85, 7, "#1b2f3a"); });
+bush(28, 15.6); bush(27.8, 20);
+
+/* ---------- Agents ---------- */
+const st = AGENTS.map((a, i) => {
+  const e = ETAT.agents[a.id] || {};
+  const statut = e.statut || "au poste";
+  let home = { x: a.desk[0] + (a.big ? 0.9 : 0.55), y: a.desk[1] + 1.15, room: a.room };
+  if (statut === "en réunion") { const s = SEATS_REUNION[i % SEATS_REUNION.length]; home = { x: s[0], y: s[1], room: "reunion" }; }
+  if (statut === "en pause") { const s = SPOTS.cafe[i % SPOTS.cafe.length]; home = { x: s[0], y: s[1], room: "cafe" }; }
+  return { a, statut, tache: e.tache || "", home, x: home.x, y: home.y, room: home.room, path: [], mode: "sit", t: 3 + Math.random() * 14, phase: Math.random() * 6, bubble: null, out: false };
+});
+
+function corridor(ax, ay, bx, by) {
+  if (Math.abs(ay - by) < 0.01) return [[bx, by]];
+  const cx = [9.5, 20.5].sort((p, q) => (Math.abs(ax - p) + Math.abs(bx - p)) - (Math.abs(ax - q) + Math.abs(bx - q)))[0];
+  return [[cx, ay], [cx, by], [bx, by]];
+}
+function route(s, tx, ty, troom) {
+  if (s.room === troom) return [[tx, ty]];
+  const A = ROOM[s.room].door, B = ROOM[troom].door;
+  return [[A.inX, A.inY], [A.outX, A.outY], ...corridor(A.outX, A.outY, B.outX, B.outY), [B.inX, B.inY], [tx, ty]];
+}
+function say(s, text, sec = 4.2) { s.bubble = { text, until: performance.now() + sec * 1000 }; }
+
+function tick(s, dt) {
+  if (REDUCED) return;
+  if (s.mode === "sit" || s.mode === "stay") {
+    s.t -= dt;
+    if (s.t <= 0) {
+      if (s.mode === "sit") {
+        const r = Math.random();
+        let tgt;
+        if (r < 0.55) { const c = SPOTS.cafe[Math.floor(Math.random() * SPOTS.cafe.length)]; tgt = [c[0], c[1], "cafe"]; }
+        else if (r < 0.75) { const c = SPOTS.ops[0]; tgt = [c[0], c[1], "ops"]; }
+        else { const o = st[Math.floor(Math.random() * st.length)]; if (o === s) { s.t = 6; return; } tgt = [o.home.x + 0.7, o.home.y - 0.1, o.home.room]; }
+        s.path = route(s, tgt[0], tgt[1], tgt[2]); s.nextRoom = tgt[2]; s.mode = "walk"; s.out = true;
+      } else {
+        s.path = route(s, s.home.x, s.home.y, s.home.room); s.nextRoom = s.home.room; s.mode = "walk"; s.out = false;
+      }
+    }
+    return;
+  }
+  const tgt = s.path[0];
+  if (!tgt) return;
+  const dx = tgt[0] - s.x, dy = tgt[1] - s.y, dist = Math.hypot(dx, dy), sp = 1.7 * dt;
+  if (dist <= sp) {
+    s.x = tgt[0]; s.y = tgt[1]; s.path.shift();
+    if (!s.path.length) {
+      s.room = s.nextRoom;
+      if (s.out) { s.mode = "stay"; s.t = 3 + Math.random() * 4; if (s.room === "cafe" && Math.random() < 0.7) say(s, CAFE_LINES[Math.floor(Math.random() * CAFE_LINES.length)], 3); else if (s.room === "ops") say(s, "J'imprime le tableau des précommandes", 3); }
+      else { s.mode = "sit"; s.t = 8 + Math.random() * 18; }
+    }
+  } else { s.x += dx / dist * sp; s.y += dy / dist * sp; s.dir = dx - dy >= 0 ? 1 : -1; }
+}
+
+function drawAgent(s, now) {
+  const [sx, sy] = P(s.x, s.y);
+  const [base, zip] = SUITS[s.a.suit];
+  const walking = s.mode === "walk";
+  const sitting = s.mode === "sit" && s.statut !== "en pause";
+  const bob = walking ? (Math.sin(now / 90 + s.phase) > 0 ? 1 : 0) : 0;
+  ctx.fillStyle = "rgba(20,10,40,.22)"; ctx.beginPath(); ctx.ellipse(sx, sy, 5, 2.4, 0, 0, 7); ctx.fill();
+  const top = sy - (sitting ? 18 : 22) - bob;
+  // jambes
+  if (!sitting) {
+    const l = walking ? (bob ? 1 : -1) : 0;
+    rect(sx - 3, sy - 7 + l, 2, 6 - l, shade(base, -0.2)); rect(sx + 1, sy - 7 - l, 2, 6 + l, shade(base, -0.2));
+    rect(sx - 3, sy - 1 + (walking && bob ? 0 : 0), 2, 1, "#111"); rect(sx + 1, sy - 1, 2, 1, "#111");
+  } else { rect(sx - 3, sy - 4, 6, 2, shade(base, -0.2)); }
+  // veste
+  rect(sx - 4, top + 7, 8, 9, base);
+  rect(sx, top + 7, 1, 9, zip);
+  rect(sx - 3, top + 9, 2, 2, shade(base, -0.12)); rect(sx - 3, top + 9, 2, 1, zip);
+  rect(sx - 6, top + 8, 2, 7, shade(base, -0.1)); rect(sx + 4, top + 8, 2, 7, shade(base, -0.1));
+  rect(sx - 6, top + 15, 2, 1, "#111"); rect(sx + 4, top + 15, 2, 1, "#111");
+  // capuche + cagoule + masque
+  rect(sx - 4, top, 8, 8, base);
+  rect(sx - 3, top + 1, 6, 6, "#121212");
+  rect(sx - 3, top + 2, 6, 2, zip); rect(sx - 2, top + 2, 2, 1, "rgba(255,255,255,.7)");
+  if (s === selected) {
+    const ay = top - 8 + Math.sin(now / 200) * 1.5;
+    poly([[sx - 3, ay], [sx + 3, ay], [sx, ay + 4]], "#ffffff");
+  }
+}
+
+/* ---------- Rendu ---------- */
+let selected = null, selRoom = null;
+let last = performance.now();
+let nextChat = performance.now() + 1500;
+const clouds = Array.from({ length: 6 }, (_, i) => ({ x: Math.random(), y: 0.05 + Math.random() * 0.5, s: 0.6 + Math.random() * 0.8, v: 0.004 + Math.random() * 0.006 }));
+
+function drawFloor() {
+  // socle
+  poly([P(-2, 25), P(32, 25), P(32, 25, -26), P(-2, 25, -26)], "#8a5a3a");
+  poly([P(32, -2), P(32, 25), P(32, 25, -26), P(32, -2, -26)], "#6e4529");
+  poly([P(-2, 25, -4), P(32, 25, -4), P(32, 25, -9), P(-2, 25, -9)], "#a06a45");
+  poly([P(-2, -2), P(32, -2), P(32, 25), P(-2, 25)], "#6fcf6b");
+  poly([P(-2, 25), P(32, 25), P(32, 25, -4), P(-2, 25, -4)], "#4fa94b");
+  poly([P(32, -2), P(32, 25), P(32, 25, -4), P(32, -2, -4)], "#3f8f3b");
+  // plancher
+  poly([P(0.3, 0.3), P(29.7, 0.3), P(29.7, 22.6), P(0.3, 22.6)], "#ecd9bd");
+  for (let x = 0; x < 30; x++) for (let y = 0; y < 23; y++) if ((x + y) % 2 === 0 && x > 0 && y > 0 && x < 30 && y < 23) poly([P(x, y), P(x + 1, y), P(x + 1, y + 1), P(x, y + 1)], "rgba(150,110,60,.06)");
+  ROOMS.forEach(r => {
+    poly([P(r.x, r.y), P(r.x + r.w, r.y), P(r.x + r.w, r.y + r.h), P(r.x, r.y + r.h)], shade(r.col, 0.62));
+    for (let x = r.x; x < r.x + r.w; x++) for (let y = r.y; y < r.y + r.h; y++) {
+      if (r.checker ? (x + y) % 2 === 0 : (x + y) % 2 === 0) poly([P(x, y), P(x + 1, y), P(x + 1, y + 1), P(x, y + 1)], r.checker ? "rgba(120,70,30,.28)" : shade(r.col, 0.55));
+    }
+    if (r === selRoom) { ctx.lineWidth = 2; ctx.strokeStyle = "#ffffff"; ctx.setLineDash([4, 3]); ctx.beginPath(); [P(r.x, r.y), P(r.x + r.w, r.y), P(r.x + r.w, r.y + r.h), P(r.x, r.y + r.h)].forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); ctx.stroke(); ctx.setLineDash([]); }
+  });
+  // tapis de la porte d'entrée
+  poly([P(14, 22.3), P(16, 22.3), P(16, 23.2), P(14, 23.2)], "#ff4fa3");
+}
+
+const toScreen = (wx, wy) => [wx * zoom + panX, wy * zoom + panY];
+
+function roundRect(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+function wrap(text, max, font) { ctx.font = font; const words = text.split(" "), lines = []; let cur = ""; words.forEach(w => { const t = cur ? cur + " " + w : w; if (ctx.measureText(t).width > max && cur) { lines.push(cur); cur = w; } else cur = t; }); if (cur) lines.push(cur); return lines.slice(0, 3); }
+
+function drawLabels(now) {
+  const small = zoom < 0.75;
+  ROOMS.forEach(r => {
+    const n = st.filter(s => s.room === r.id && s.mode !== "walk").length;
+    const total = AGENTS.filter(a => a.room === r.id).length;
+    const [wx, wy] = P(r.x + 0.2, r.y + r.h - 0.2);
+    const [x, y] = toScreen(wx, wy);
+    const sub = total ? `${n}/${total} au poste` : (n ? `${n} présent${n > 1 ? "s" : ""}` : "libre");
+    ctx.font = `600 ${small ? 10 : 12}px Inter, system-ui, sans-serif`;
+    const tw = ctx.measureText(r.nom).width; ctx.font = `400 ${small ? 8 : 9}px Silkscreen, monospace`; const sw = ctx.measureText(sub).width;
+    const w = Math.max(tw, sw) + 14, h = small ? 26 : 30;
+    ctx.fillStyle = shade(r.col, -0.05); roundRect(x - 4, y - h + 4, w, h, 7); ctx.fill();
+    ctx.strokeStyle = "rgba(255,255,255,.75)"; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.fillStyle = "#fff"; ctx.font = `600 ${small ? 10 : 12}px Inter, system-ui, sans-serif`; ctx.fillText(r.nom, x + 3, y - h + 4 + (small ? 12 : 14));
+    ctx.font = `400 ${small ? 8 : 9}px Silkscreen, monospace`; ctx.globalAlpha = .9; ctx.fillText(sub, x + 3, y - h + 4 + (small ? 22 : 25)); ctx.globalAlpha = 1;
+  });
+  st.forEach(s => {
+    if (!s.bubble || s.bubble.until < now) { s.bubble = null; return; }
+    const [wx, wy] = P(s.x, s.y, 26);
+    const [x, y] = toScreen(wx, wy);
+    const maxW = 190, fontT = "italic 14px 'Instrument Serif', Georgia, serif";
+    const lines = wrap(s.bubble.text, maxW, fontT);
+    ctx.font = fontT; const w = Math.max(...lines.map(l => ctx.measureText(l).width), 60) + 20, h = 22 + lines.length * 16;
+    const bx = Math.min(Math.max(x - w / 2, 6), CW - w - 6), by = y - h - 8;
+    ctx.fillStyle = "rgba(255,255,255,.96)"; roundRect(bx, by, w, h, 10); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(x - 5, by + h); ctx.lineTo(x + 5, by + h); ctx.lineTo(x, by + h + 6); ctx.fill();
+    ctx.fillStyle = shade(SUITS[s.a.suit][1], -0.15); ctx.font = "400 9px Silkscreen, monospace"; ctx.fillText("● " + s.a.prenom.toUpperCase(), bx + 10, by + 15);
+    ctx.fillStyle = "#2a2340"; ctx.font = fontT; lines.forEach((l, i) => ctx.fillText(l, bx + 10, by + 32 + i * 16));
+  });
+}
+
+function frame(now) {
+  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  st.forEach(s => tick(s, dt));
+  if (now > nextChat && !REDUCED) {
+    const pool = st.filter(s => s.mode === "sit" && !s.bubble && s.tache);
+    if (pool.length) { const s = pool[Math.floor(Math.random() * pool.length)]; say(s, s.tache, 4.5); }
+    nextChat = now + 2600 + Math.random() * 2200;
+  }
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  ctx.clearRect(0, 0, CW, CH);
+  // nuages
+  ctx.fillStyle = "rgba(255,255,255,.75)";
+  clouds.forEach(c => { if (!REDUCED) c.x = (c.x + c.v * dt) % 1.2; const x = (c.x - 0.1) * CW, y = c.y * CH, s = c.s * 14; ctx.fillRect(x, y, s * 4, s); ctx.fillRect(x + s, y - s * 0.6, s * 2, s * 0.6); });
+
+  ctx.setTransform(DPR * zoom, 0, 0, DPR * zoom, DPR * panX, DPR * panY);
+  ctx.imageSmoothingEnabled = false;
+  drawFloor();
+  const items = statics.slice();
+  st.forEach(s => items.push({ k: s.x + s.y + 0.05, fn: () => drawAgent(s, now) }));
+  items.sort((p, q) => p.k - q.k).forEach(it => it.fn());
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  drawLabels(now);
+  requestAnimationFrame(frame);
+}
+
+/* ---------- Interface ---------- */
+const chipsEl = document.getElementById("chips"), card = document.getElementById("card");
+document.getElementById("count").textContent = `${AGENTS.length} agents IA · ${ROOMS.length} espaces`;
+document.getElementById("maj").textContent = ETAT.maj ? `État du QG au ${ETAT.maj}` : "";
+
+ROOMS.forEach(r => {
+  const b = document.createElement("button");
+  b.className = "chip"; b.style.background = r.col; b.setAttribute("aria-pressed", "false");
+  const names = AGENTS.filter(a => a.room === r.id).map(a => a.prenom).join(", ");
+  b.innerHTML = `${r.nom}<small>${names || (r.id === "cafe" ? "pause café" : "réunions")}</small>`;
+  b.addEventListener("click", () => {
+    selRoom = selRoom === r ? null : r;
+    [...chipsEl.children].forEach(c => c.setAttribute("aria-pressed", "false"));
+    if (selRoom) b.setAttribute("aria-pressed", "true");
+    const first = AGENTS.find(a => a.room === r.id); if (selRoom && first) select(st.find(s => s.a === first));
+  });
+  chipsEl.appendChild(b);
+});
+
+function avatar(s) {
+  const c = document.createElement("canvas"); c.width = 16; c.height = 22; const g = c.getContext("2d");
+  const [base, zip] = SUITS[s.a.suit]; const R = (x, y, w, h, col) => { g.fillStyle = col; g.fillRect(x, y, w, h); };
+  R(4, 0, 8, 8, base); R(5, 1, 6, 6, "#121212"); R(5, 2, 6, 2, zip); R(6, 2, 2, 1, "rgba(255,255,255,.7)");
+  R(4, 7, 8, 9, base); R(8, 7, 1, 9, zip); R(5, 9, 2, 1, zip); R(2, 8, 2, 7, shade(base, -0.1)); R(12, 8, 2, 7, shade(base, -0.1));
+  R(5, 16, 2, 5, shade(base, -0.2)); R(9, 16, 2, 5, shade(base, -0.2)); R(5, 21, 2, 1, "#111"); R(9, 21, 2, 1, "#111");
+  return c;
+}
+function select(s) {
+  selected = s;
+  const r = ROOM[s.a.room];
+  const pillCls = s.statut === "en pause" ? "pause" : s.statut === "en réunion" ? "meet" : "";
+  const cmd = `Demande à ${s.a.prenom} (${s.a.fichier}) : `;
+  card.innerHTML = `
+    <div class="who"><span id="av"></span><div style="min-width:0"><h3>${s.a.prenom}</h3><p class="role">${s.a.poste}<br>${r.nom}</p></div></div>
+    <span class="pill ${pillCls}">${s.statut}</span>
+    <div><div class="label">Sur son bureau</div><p class="task">${s.tache || "Rien pour l'instant"}</p></div>
+    <div style="display:grid;gap:6px"><div class="label">L'appeler dans Claude Code</div>
+      <div class="cmd"><code id="cmdtxt">${cmd}…</code><button class="copy" id="copybtn">Copier</button></div></div>`;
+  card.querySelector("#av").replaceWith(Object.assign(avatar(s), { title: s.a.prenom }));
+  card.querySelector("#copybtn").addEventListener("click", e => {
+    const btn = e.currentTarget;
+    navigator.clipboard.writeText(cmd).then(() => { btn.textContent = "Copié"; setTimeout(() => btn.textContent = "Copier", 1400); })
+      .catch(() => { const sel = getSelection(), rg = document.createRange(); rg.selectNodeContents(document.getElementById("cmdtxt")); sel.removeAllRanges(); sel.addRange(rg); });
+  });
+  if (s.tache) say(s, s.tache, 5);
+}
+
+/* pan + clic */
+let drag = null;
+cv.addEventListener("pointerdown", e => { drag = { x: e.clientX, y: e.clientY, px: panX, py: panY, moved: false }; cv.setPointerCapture(e.pointerId); });
+cv.addEventListener("pointermove", e => { if (!drag) return; const dx = e.clientX - drag.x, dy = e.clientY - drag.y; if (Math.abs(dx) + Math.abs(dy) > 4) drag.moved = true; panX = drag.px + dx; panY = drag.py + dy; });
+cv.addEventListener("pointerup", e => {
+  if (drag && !drag.moved) {
+    const rc = cv.getBoundingClientRect(); const mx = (e.clientX - rc.left - panX) / zoom, my = (e.clientY - rc.top - panY) / zoom;
+    let hit = null, best = -1;
+    st.forEach(s => { const [sx, sy] = P(s.x, s.y); const pad = 6 / Math.min(zoom, 1); if (mx > sx - 7 - pad && mx < sx + 7 + pad && my > sy - 24 - pad && my < sy + 3 + pad && s.x + s.y > best) { best = s.x + s.y; hit = s; } });
+    if (hit) { select(hit); document.getElementById("hint").hidden = true; }
+  }
+  drag = null;
+});
+function zoomBy(f) { const cx = CW / 2, cy = CH / 2; panX = cx - (cx - panX) * f; panY = cy - (cy - panY) * f; zoom *= f; }
+document.getElementById("zin").onclick = () => zoomBy(1.25);
+document.getElementById("zout").onclick = () => zoomBy(0.8);
+document.getElementById("zfit").onclick = fit;
+
+resize();
+select(st[0]);
+requestAnimationFrame(frame);
+})();
+</script>
