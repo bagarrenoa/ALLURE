@@ -2,6 +2,16 @@
 
 Réponds directement sous chaque question (ou dans le chat). Les agents mettront `BRIEF.md` à jour.
 
+## 🔥 Les 8 réponses qui débloquent tout (avant le 24/11)
+- **Q2 + Q17** : budget total, perte maximale acceptée, budget pub par mois
+- **Q3b** : es-tu prêt à changer de nom si « Allure » n'est pas disponible ?
+- **Q37** : d'accord pour ne pas livrer cet hiver (Saison 0) et livrer la Série 01 avant l'hiver 2027-28 ?
+- **Q4 + Q7a** : défauts du prototype (photos) et qui possède les patrons
+- **Q8** : dates du voyage au Portugal
+- **Q10** : prix de vente visé
+- **Q11** : combien de précommandes/inscrits aujourd'hui, et « gratuite » = sans paiement ?
+- **Q36** : combien de tenues existent vraiment, dans quels coloris
+
 ## 🏢 Société & argent (Hugo)
 1. As-tu déjà une structure (micro-entreprise, SASU, SAS…) ? À quel nom ?
 2. Budget total dont tu disposes pour le lancement (production + marketing) ?
@@ -52,11 +62,11 @@ Réponds directement sous chaque question (ou dans le chat). Les agents mettront
 33. (Sam) Réel « ange de bitume / ange de neige » : publier tout de suite avec les photos existantes (logos tiers effacés) ou attendre le tournage vidéo ?
 34. (Sam) Instagram : compte professionnel ou personnel ? Ça change la bibliothèque de sons disponible (lié à la question 22).
 
-24. (Inès) Combien d'inscrits compte la liste d'attente aujourd'hui (le site en garde-t-il une trace en plus des e-mails Gmail) ?
-25. (Inès) Combien de tenues complètes existent physiquement, et dans quels coloris ? (pour les tournages : il en faut idéalement 5)
-26. (Inès) Es-tu d'accord pour ne **pas** livrer cet hiver et viser une livraison « Série 01 » avant l'hiver 2027-28 ? Sinon, existe-t-il un stock vendable rapidement ?
-27. (Inès) Vas-tu (toi ou la bande) en station cet hiver ? À quelles dates ? (tournages neige)
-28. (Inès) Marchés visés : France seulement, ou aussi l'Espagne (photos tournées à Madrid) ?
+35. (Inès) Combien d'inscrits compte la liste d'attente aujourd'hui (le site en garde-t-il une trace en plus des e-mails Gmail) ?
+36. (Inès) Combien de tenues complètes existent physiquement, et dans quels coloris ? (pour les tournages : il en faut idéalement 5)
+37. (Inès) Es-tu d'accord pour ne **pas** livrer cet hiver et viser une livraison « Série 01 » avant l'hiver 2027-28 ? Sinon, existe-t-il un stock vendable rapidement ?
+38. (Inès) Vas-tu (toi ou la bande) en station cet hiver ? À quelles dates ? (tournages neige)
+39. (Inès) Marchés visés : France seulement, ou aussi l'Espagne (photos tournées à Madrid) ?
 
 ## 🔐 Accès (Victor)
 21. Pour lire les précommandes Gmail : veux-tu connecter le connecteur Gmail à Claude (claude.ai → Paramètres → Connecteurs), ou plutôt me transférer les e-mails ?
