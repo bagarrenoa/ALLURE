@@ -72,3 +72,8 @@ Réponds directement sous chaque question (ou dans le chat). Les agents mettront
 21. Pour lire les précommandes Gmail : veux-tu connecter le connecteur Gmail à Claude (claude.ai → Paramètres → Connecteurs), ou plutôt me transférer les e-mails ?
 22. Instagram : ton compte est-il un compte professionnel (Business/Créateur) relié à une page Facebook ? (nécessaire pour toute automatisation officielle)
 23. Tu parlais de deux vidéos : je n'en ai reçu qu'une (le « QG d'agents IA » sur TikTok). Peux-tu renvoyer l'autre ?
+
+## 🔎 Nom « Allure » (Hugo, 17/11)
+40. Les bases officielles (TMview, INPI) bloquent les recherches automatiques. Peux-tu faire la recherche toi-même sur **tmdn.org/tmview** (mode d'emploi au §4 de `finance-juridique/2026-11-17-recherche-nom-allure.md`) et m'envoyer des captures des résultats ?
+41. Accepterais-tu de demander 2 devis à des conseils en propriété industrielle (avis de disponibilité + dépôt) ?
+42. Quel élément distinctif ajouter au logo script pour le dépôt : monogramme « A », étoiles, ou autre ? (Mila et Inès proposeront des pistes)
