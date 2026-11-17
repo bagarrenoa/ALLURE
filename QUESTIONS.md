@@ -48,6 +48,9 @@ Réponds directement sous chaque question (ou dans le chat). Les agents mettront
 29. (Zoé) Quel outil IA d'images utilise-t-on (Midjourney, Firefly, autre) et avec quel budget mensuel ?
 30. (Zoé / Hugo) Les conditions de l'outil choisi autorisent-elles l'usage commercial et publicitaire des images générées ?
 31. (Zoé) Pour une vraie photo où un seul objet est ajouté par IA (ex. la baguette géante), affiche-t-on quand même « visuel généré par IA » ? (recommandé)
+32. (Sam) CTA des réels : « liste d'attente » ou « précommande » ? La bio dit les deux : il faut un seul mot partout.
+33. (Sam) Réel « ange de bitume / ange de neige » : publier tout de suite avec les photos existantes (logos tiers effacés) ou attendre le tournage vidéo ?
+34. (Sam) Instagram : compte professionnel ou personnel ? Ça change la bibliothèque de sons disponible (lié à la question 22).
 
 24. (Inès) Combien d'inscrits compte la liste d'attente aujourd'hui (le site en garde-t-il une trace en plus des e-mails Gmail) ?
 25. (Inès) Combien de tenues complètes existent physiquement, et dans quels coloris ? (pour les tournages : il en faut idéalement 5)
