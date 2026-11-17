@@ -15,6 +15,9 @@ Réponds directement sous chaque question (ou dans le chat). Les agents mettront
 5. Combien t'a coûté le prototype, et quel prix unitaire t'annonçait l'usine ?
 6. Specs voulues : imperméabilité (10k/20k mm ?), respirabilité, coutures étanchées, isolation ou coque seule ?
 7. Tailles prévues ? Unisexe ?
+7a. (Rui, 17/11) As-tu des croquis cotés, un tableau de mesures ou des patrons du prototype pakistanais ? À qui appartiennent les patrons ?
+7b. (Rui, 17/11) As-tu les références Pantone des 5 coloris (base + zips) et le fichier vectoriel du logo ?
+7c. (Rui, 17/11) Budget pour le développement (prototypes, essais labo CITEVE, voyage, modéliste freelance) ?
 8. Dates de ton voyage au Portugal ? Ville(s) ? As-tu déjà des contacts ?
 9. Quantité visée pour la 1re production (par coloris) ? Quels coloris en priorité ?
 
