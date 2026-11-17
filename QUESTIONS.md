@@ -6,6 +6,9 @@ Réponds directement sous chaque question (ou dans le chat). Les agents mettront
 1. As-tu déjà une structure (micro-entreprise, SASU, SAS…) ? À quel nom ?
 2. Budget total dont tu disposes pour le lancement (production + marketing) ?
 3. As-tu vérifié/déposé la marque « Allure » (INPI) ? As-tu un plan B de nom ?
+3b. (Hugo, 17/11) Es-tu prêt à changer de nom si la recherche d'antériorité est mauvaise ? Peux-tu autoriser inpi.fr, euipo.europa.eu et tmdn.org dans la session pour que je fasse la recherche, ou la faire toi-même dans TMview ?
+3c. (Hugo, 17/11) Budget pour un conseil en propriété industrielle (avis de disponibilité + dépôt) et pour un expert-comptable ?
+3d. (Hugo, 17/11) Pays de vente visés au lancement : France seule, ou aussi Espagne/UE (impact TVA et dépôt UE) ?
 
 ## 🧵 Produit & production (Rui)
 4. Qu'est-ce qui ne va pas sur le prototype pakistanais ? (photos des défauts si possible)
@@ -39,6 +42,12 @@ Réponds directement sous chaque question (ou dans le chat). Les agents mettront
 25. As-tu le fichier vectoriel (SVG/AI/PDF) du logo script « Allure » ?
 26. Pour le shooting à 3 au téléphone : qui joue le personnage, qui filme, qui assiste ? Quelle ville et quelle station, quelles dates ?
 27. Plusieurs visuels montrent des marques tierces (Bataleon, Pokémon, Sprite, Diesel, AirPods, logos de gants) : pour ceux déjà publiés, on les retouche, on les archive, ou on les laisse en organique sans jamais les sponsoriser ?
+
+24. (Inès) Combien d'inscrits compte la liste d'attente aujourd'hui (le site en garde-t-il une trace en plus des e-mails Gmail) ?
+25. (Inès) Combien de tenues complètes existent physiquement, et dans quels coloris ? (pour les tournages : il en faut idéalement 5)
+26. (Inès) Es-tu d'accord pour ne **pas** livrer cet hiver et viser une livraison « Série 01 » avant l'hiver 2027-28 ? Sinon, existe-t-il un stock vendable rapidement ?
+27. (Inès) Vas-tu (toi ou la bande) en station cet hiver ? À quelles dates ? (tournages neige)
+28. (Inès) Marchés visés : France seulement, ou aussi l'Espagne (photos tournées à Madrid) ?
 
 ## 🔐 Accès (Victor)
 21. Pour lire les précommandes Gmail : veux-tu connecter le connecteur Gmail à Claude (claude.ai → Paramètres → Connecteurs), ou plutôt me transférer les e-mails ?
