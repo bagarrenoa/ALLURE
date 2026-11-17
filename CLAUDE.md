@@ -10,7 +10,7 @@ Le fondateur est le **seul décideur** : les agents proposent, il tranche.
 3. Chaque livrable est un fichier daté dans le dossier de son pôle : `AAAA-MM-JJ-sujet.md`.
 4. Rien ne sort du QG sans validation du fondateur : pas de publication, pas d'e-mail envoyé, pas de paiement, pas de signature.
 5. Citer ses sources (lien) pour toute info externe : usines, prix, salons, influenceurs, lois.
-6. Respect des données : les e-mails/noms des clients restent dans `ops/` et ne sont jamais envoyés à un service externe.
+6. Respect des données : le dépôt GitHub est **public**. Les vraies données clients (noms, e-mails, adresses) vont uniquement dans `ops/clients/` (ignoré par git) et ne sont jamais envoyées à un service externe. `ops/precommandes.csv` ne contient que l'en-tête.
 
 ## L'organigramme
 | Pôle | Bureau (dossier) | Agent | Rôle |
