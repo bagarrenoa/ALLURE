@@ -325,6 +325,7 @@ function say(s, text, sec = 4.2) { s.bubble = { text, until: performance.now() +
 
 function tick(s, dt) {
   if (REDUCED) return;
+  if (s.statut !== "au poste" && s.mode === "sit") return;
   if (s.mode === "sit" || s.mode === "stay") {
     s.t -= dt;
     if (s.t <= 0) {
