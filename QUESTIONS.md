@@ -34,6 +34,12 @@ Réponds directement sous chaque question (ou dans le chat). Les agents mettront
 19. Ta cible idéale : âge, pays, ski ou snowboard, plutôt station ou plutôt ville ?
 20. As-tu des images/vidéos brutes (rushes) qu'on peut réutiliser ?
 
+## 🎬 Studio (Mila)
+24. Combien d'ensembles physiques par coloris sont disponibles pour un shooting ? La bande rouge dans le dos du Noir existe-t-elle en vrai ou seulement sur le mockup ?
+25. As-tu le fichier vectoriel (SVG/AI/PDF) du logo script « Allure » ?
+26. Pour le shooting à 3 au téléphone : qui joue le personnage, qui filme, qui assiste ? Quelle ville et quelle station, quelles dates ?
+27. Plusieurs visuels montrent des marques tierces (Bataleon, Pokémon, Sprite, Diesel, AirPods, logos de gants) : pour ceux déjà publiés, on les retouche, on les archive, ou on les laisse en organique sans jamais les sponsoriser ?
+
 ## 🔐 Accès (Victor)
 21. Pour lire les précommandes Gmail : veux-tu connecter le connecteur Gmail à Claude (claude.ai → Paramètres → Connecteurs), ou plutôt me transférer les e-mails ?
 22. Instagram : ton compte est-il un compte professionnel (Business/Créateur) relié à une page Facebook ? (nécessaire pour toute automatisation officielle)
