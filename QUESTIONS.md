@@ -45,6 +45,9 @@ Réponds directement sous chaque question (ou dans le chat). Les agents mettront
 25. As-tu le fichier vectoriel (SVG/AI/PDF) du logo script « Allure » ?
 26. Pour le shooting à 3 au téléphone : qui joue le personnage, qui filme, qui assiste ? Quelle ville et quelle station, quelles dates ?
 27. Plusieurs visuels montrent des marques tierces (Bataleon, Pokémon, Sprite, Diesel, AirPods, logos de gants) : pour ceux déjà publiés, on les retouche, on les archive, ou on les laisse en organique sans jamais les sponsoriser ?
+29. (Zoé) Quel outil IA d'images utilise-t-on (Midjourney, Firefly, autre) et avec quel budget mensuel ?
+30. (Zoé / Hugo) Les conditions de l'outil choisi autorisent-elles l'usage commercial et publicitaire des images générées ?
+31. (Zoé) Pour une vraie photo où un seul objet est ajouté par IA (ex. la baguette géante), affiche-t-on quand même « visuel généré par IA » ? (recommandé)
 
 24. (Inès) Combien d'inscrits compte la liste d'attente aujourd'hui (le site en garde-t-il une trace en plus des e-mails Gmail) ?
 25. (Inès) Combien de tenues complètes existent physiquement, et dans quels coloris ? (pour les tournages : il en faut idéalement 5)
