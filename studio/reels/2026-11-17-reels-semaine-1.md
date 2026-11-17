@@ -19,7 +19,7 @@ Sources : `BRIEF.md`, `studio/2026-11-17-concepts-campagne.md` (charte §1, conc
 
 **Logo** : on ne l'ajoute jamais en texte. On le montre sur le vêtement (dos ou col) ou on incruste le vrai fichier vectoriel (❓, question 25), une seule fois par réel.
 
-**CTA unique** (charte §1.6) : « Liste d'attente : lien en bio ». La fiche de poste de Sam parle de « précommander », mais la bio actuelle parle à la fois de « précommandes gratuites » et de « liste d'attente ». J'aligne tous les réels sur la charte, avec un seul mot : **liste d'attente**. Si le fondateur préfère « précommande », il suffit de remplacer ce mot dans les 5 légendes (question 28).
+**CTA unique** (charte §1.6) : « Liste d'attente : lien en bio ». La fiche de poste de Sam parle de « précommander », mais la bio actuelle parle à la fois de « précommandes gratuites » et de « liste d'attente ». J'aligne tous les réels sur la charte, avec un seul mot : **liste d'attente**. Si le fondateur préfère « précommande », il suffit de remplacer ce mot dans les 5 légendes (question 32).
 
 **Interdits** :
 - **aucune promesse technique** : pas de « imperméable », « chaud », « respirant », « 20k » ;
@@ -156,7 +156,7 @@ Les commentaires « couleur » servent à lire la demande par coloris, utile pou
 
 **Version immédiate, sans tournage** : avec les deux photos existantes (ange de bitume Orange, et ange de neige Marine cité par Mila), on fait un réel en photos animées.
 - Avant cela, il faut **effacer les logos tiers** de la photo Orange (boucle Diesel, casque AirPods Max, baskets à logo, cf. charte §1.7) et vérifier que l'image Marine ne montre aucune marque.
-- Sans retouche, la version immédiate n'est **pas publiable** (décision du fondateur, question 27).
+- Sans retouche, la version immédiate n'est **pas publiable** (décision du fondateur, questions 27 et 33).
 
 ### Hooks (0 à 1,5 s), 3 variantes
 | # | Visuel | Texte à l'écran |
